@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f8f8">
+    <meta name="description" content="Find and download your Microsoft Student Ambassadors workshop certificate.">
+    <title>Your Workshop Certificate | Microsoft Student Ambassadors</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script defer src="./assets/vendor/jspdf.umd.min.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Microsoft Student Ambassadors certificate portal">
+        <span class="brand-copy"><strong>Microsoft</strong><span>Student Ambassadors</span></span>
+      </a>
+      <span class="header-label">WORKSHOP CERTIFICATE PORTAL</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> BUILD WITH THE COMMUNITY</p>
+        <h1 id="page-title">Your Workshop Certificate</h1>
+        <p class="intro-copy">Find your name, review your details, and download your certificate of participation.</p>
+        <div class="event-details" aria-label="Workshop details">
+          <span class="event-title">Build and Deploy with GitHub Copilot</span>
+          <span class="event-divider" aria-hidden="true"></span>
+          <span>October 17, 2026</span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Certificate lookup and preview">
+        <aside class="lookup-panel" aria-label="Find your certificate">
+          <div class="panel-heading">
+            <span class="step-number">01</span>
+            <div><h2>Find your certificate</h2><p>Use the name you used to attend.</p></div>
+          </div>
+
+          <form id="lookup-form" novalidate>
+            <label for="participant-name">Participant name</label>
+            <div class="search-control">
+              <input id="participant-name" name="participant-name" type="search" autocomplete="name" placeholder="Enter your full name" aria-describedby="lookup-help lookup-message">
+              <button class="button button-primary" type="submit">
+                <span>Search certificate</span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"></path></svg>
+              </button>
+            </div>
+            <p class="field-help" id="lookup-help">Names are matched without regard to capitalization or extra spaces.</p>
+            <p class="form-message" id="lookup-message" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="participant-note">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"></circle><path d="M10 9v5m0-8h.01"></path></svg>
+            <p>This lookup uses names only and cannot verify identity. Participants with the same name cannot be distinguished. Corrections and download limits are stored in this browser, not enforced globally.</p>
+          </div>
+
+          <section class="record-panel" id="record-panel" hidden aria-labelledby="record-heading">
+            <div class="panel-heading panel-heading-small">
+              <span class="step-number">02</span>
+              <div><h2 id="record-heading">Your participant record</h2><p>Review the name shown on your certificate.</p></div>
+            </div>
+            <dl class="record-details">
+              <div><dt>Attendance name</dt><dd id="original-name">—</dd></div>
+              <div><dt>Certificate name</dt><dd id="certificate-name">—</dd></div>
+            </dl>
+            <button class="button button-secondary" id="correction-button" type="button">Request a name correction</button>
+            <p class="lock-note" id="correction-note">One correction is available for this browser record.</p>
+            <div class="record-divider"></div>
+            <button class="button button-download" id="download-button" type="button" disabled>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v9m0 0 3.5-3.5M10 11.5 6.5 8M3.5 13.5v3h13v-3"></path></svg>
+              <span>Download certificate</span>
+            </button>
+            <p class="download-note" id="download-note">Search your name to enable your download.</p>
+          </section>
+        </aside>
+
+        <section class="preview-panel" aria-labelledby="preview-heading">
+          <div class="preview-heading">
+            <div><span class="step-number">03</span><h2 id="preview-heading">Certificate preview</h2></div>
+            <span class="preview-badge"><span></span> LIVE PREVIEW</span>
+          </div>
+          <div class="certificate-frame">
+            <div class="certificate" id="certificate">
+              <img src="./assets/certificate-template.png" alt="Microsoft Student Ambassadors workshop certificate template" width="1421" height="1107">
+              <span class="recipient-overlay placeholder" id="recipient-overlay">Your name appears here</span>
+            </div>
+          </div>
+          <p class="preview-caption" id="preview-caption">Your certificate preview will appear here after you find your name.</p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Build and Deploy with GitHub Copilot</span>
+      <span>October 17, 2026 <i aria-hidden="true"></i> Facilitated by Alhemdrew</span>
+    </footer>
+
+    <dialog class="confirm-dialog" id="correction-dialog" aria-labelledby="correction-dialog-title">
+      <form method="dialog" id="correction-form">
+        <p class="dialog-kicker">NAME CORRECTION</p>
+        <h2 id="correction-dialog-title">Review your certificate name</h2>
+        <p class="dialog-copy">Check the spelling carefully. This browser record allows one correction, and it cannot be changed again here.</p>
+        <label for="proposed-name">Proposed certificate name</label>
+        <input id="proposed-name" name="proposed-name" maxlength="80" autocomplete="name" required>
+        <div class="dialog-comparison"><span>Attendance name</span><strong id="dialog-original-name"></strong></div>
+        <p class="dialog-warning">This is a browser-only limit. Clearing browser data or using another device can reset it.</p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel" formnovalidate>Go back</button>
+          <button class="button button-primary" id="confirm-correction" value="save">Confirm correction</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="confirm-dialog" id="download-dialog" aria-labelledby="download-dialog-title">
+      <form method="dialog" id="download-form">
+        <p class="dialog-kicker">READY TO DOWNLOAD</p>
+        <h2 id="download-dialog-title">Confirm your certificate</h2>
+        <p class="dialog-copy">Your PDF will be generated using the certificate name shown below.</p>
+        <div class="dialog-comparison"><span>Certificate name</span><strong id="download-confirm-name"></strong></div>
+        <p class="dialog-warning">The download allowance is stored in this browser and is not a secure, global restriction.</p>
+        <p class="dialog-error" id="download-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel" formnovalidate>Cancel</button>
+          <button class="button button-primary" id="confirm-download" value="download">Download PDF</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
